@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% block title %}Dashboard — Inkflow{% endblock %}
+{% block content %}
+<div class="container dashboard">
+    <div class="page-heading"><div><p class="eyebrow">YOUR WRITING</p><h1>Dashboard</h1></div><a class="button" href="{{ url_for('main.create_post') }}">New post</a></div>
+    <div class="dashboard-list">
+        {% for post in posts %}
+        <article><div><span class="status {% if post.is_published %}published{% endif %}">{% if post.is_published %}Published{% else %}Draft{% endif %}</span><h2><a href="{{ url_for('main.post_detail', slug=post.slug) if post.is_published else url_for('main.edit_post', slug=post.slug) }}">{{ post.title }}</a></h2><p>Updated {{ post.updated_at.strftime('%b %d, %Y') }} · {{ post.comments|length }} comments</p></div><a class="text-button" href="{{ url_for('main.edit_post', slug=post.slug) }}">Edit</a></article>
+        {% else %}<div class="empty-state"><h2>Your first story starts here</h2><p>Turn an idea into something worth reading.</p><a class="button" href="{{ url_for('main.create_post') }}">Write a post</a></div>{% endfor %}
+    </div>
+</div>
+{% endblock %}

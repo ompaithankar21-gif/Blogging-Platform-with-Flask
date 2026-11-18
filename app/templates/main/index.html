@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+{% block title %}Inkflow — Ideas worth sharing{% endblock %}
+{% block content %}
+<section class="hero">
+    <div class="container hero-grid">
+        <div>
+            <p class="eyebrow">THE COMMUNITY JOURNAL</p>
+            <h1>Stories for curious minds.</h1>
+        </div>
+        <p class="hero-copy">Discover thoughtful perspectives, practical ideas, and stories that stay with you.</p>
+    </div>
+</section>
+
+<div class="container">
+    <div class="category-row">
+        <a class="category {% if not active_category %}active{% endif %}" href="{{ url_for('main.index') }}">All stories</a>
+        {% for category in categories %}
+            <a class="category {% if active_category == category.name %}active{% endif %}" href="{{ url_for('main.index', category=category.name) }}">{{ category.name }}</a>
+        {% endfor %}
+    </div>
+
+    <section class="story-layout">
+        <div class="story-grid">
+            {% for post in posts.items %}
+            <article class="story-card">
+                <div class="story-meta"><span>{{ post.category.name if post.category else 'Journal' }}</span><time>{{ post.created_at.strftime('%b %d, %Y') }}</time></div>
+                <h2><a href="{{ url_for('main.post_detail', slug=post.slug) }}">{{ post.title }}</a></h2>
+                <p>{{ post.summary }}</p>
+                <div class="author-row"><div class="avatar">{{ post.author.name[0]|upper }}</div><span>By {{ post.author.name }}</span></div>
+            </article>
+            {% else %}
+            <div class="empty-state"><h2>No stories found</h2><p>Try another search or be the first to publish.</p></div>
+            {% endfor %}
+        </div>
+
+        <aside class="sidebar">
+            <h3>Popular topics</h3>
+            <div class="tag-cloud">
+                {% for tag in popular_tags %}<a href="{{ url_for('main.index', tag=tag.name) }}">#{{ tag.name }}</a>{% else %}<span>No tags yet</span>{% endfor %}
+            </div>
+        </aside>
+    </section>
+
+    {% if posts.pages > 1 %}
+    <nav class="pagination">
+        {% if posts.has_prev %}<a href="{{ url_for('main.index', page=posts.prev_num, category=active_category, q=search) }}">← Previous</a>{% endif %}
+        <span>Page {{ posts.page }} of {{ posts.pages }}</span>
+        {% if posts.has_next %}<a href="{{ url_for('main.index', page=posts.next_num, category=active_category, q=search) }}">Next →</a>{% endif %}
+    </nav>
+    {% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% block title %}{% if post %}Edit post{% else %}Write a post{% endif %} — Inkflow{% endblock %}
+{% block content %}
+<div class="editor-page container">
+    <div class="page-heading"><div><p class="eyebrow">{% if post %}EDIT STORY{% else %}NEW STORY{% endif %}</p><h1>{% if post %}Refine your post{% else %}Share your idea{% endif %}</h1></div></div>
+    <form class="editor-form" method="post" id="post-form">
+        {{ form.hidden_tag() }}
+        <div class="field"><label>{{ form.title.label }}</label>{{ form.title(class='title-input', placeholder='Give your story a memorable title') }}</div>
+        <div class="field"><label>{{ form.summary.label }}</label>{{ form.summary(placeholder='A short introduction for readers') }}</div>
+        <div class="editor-grid">
+            <div class="field"><label>{{ form.category.label }}</label>{{ form.category() }}</div>
+            <div class="field"><label>{{ form.tags.label }}</label>{{ form.tags(placeholder='design, culture, ideas') }}<small>{{ form.tags.description }}</small></div>
+        </div>
+        <div class="field"><label>{{ form.content.label }}</label>
+            <div class="rich-toolbar" aria-label="Formatting tools"><button type="button" data-command="bold"><strong>B</strong></button><button type="button" data-command="italic"><em>I</em></button><button type="button" data-command="formatBlock" data-value="h2">H2</button><button type="button" data-command="insertUnorderedList">• List</button><button type="button" data-command="insertOrderedList">1. List</button><button type="button" data-command="formatBlock" data-value="blockquote">Quote</button></div>
+            <div class="rich-editor" contenteditable="true" role="textbox" aria-multiline="true" placeholder="Start writing…">{% if post %}{{ post.content|safe }}{% endif %}</div>
+            {{ form.content(class='hidden-input') }}
+        </div>
+        <label class="check publish-check">{{ form.is_published() }} {{ form.is_published.label.text }}</label>
+        <div class="editor-actions">{{ form.submit(class='button') }}<a class="text-button" href="{{ url_for('main.dashboard') }}">Cancel</a></div>
+    </form>
+</div>
+{% endblock %}
