@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block title %}Log in — Inkflow{% endblock %}
+{% block content %}
+<section class="auth-section"><div class="auth-card">
+    <p class="eyebrow">WELCOME BACK</p><h1>Log in</h1>
+    <form method="post">
+        {{ form.hidden_tag() }}
+        {% for field in [form.email, form.password] %}
+        <div class="field"><label>{{ field.label }}</label>{{ field() }}{% for error in field.errors %}<small class="error">{{ error }}</small>{% endfor %}</div>
+        {% endfor %}
+        <label class="check">{{ form.remember() }} {{ form.remember.label.text }}</label>
+        {{ form.submit(class='button button-full') }}
+    </form>
+    <p class="auth-switch">New here? <a href="{{ url_for('auth.register') }}">Create an account</a></p>
+</div></section>
+{% endblock %}

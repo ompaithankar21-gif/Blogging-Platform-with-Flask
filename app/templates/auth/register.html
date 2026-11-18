@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% block title %}Create account — Inkflow{% endblock %}
+{% block content %}
+<section class="auth-section"><div class="auth-card">
+    <p class="eyebrow">JOIN THE COMMUNITY</p><h1>Create your account</h1>
+    <form method="post">
+        {{ form.hidden_tag() }}
+        {% for field in [form.name, form.email, form.password, form.confirm_password] %}
+        <div class="field"><label>{{ field.label }}</label>{{ field() }}{% for error in field.errors %}<small class="error">{{ error }}</small>{% endfor %}</div>
+        {% endfor %}
+        {{ form.submit(class='button button-full') }}
+    </form>
+    <p class="auth-switch">Already a member? <a href="{{ url_for('auth.login') }}">Log in</a></p>
+</div></section>
+{% endblock %}
